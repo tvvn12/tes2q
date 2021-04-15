@@ -1,0 +1,65 @@
+﻿@model IEnumerable<TCS2011PPTG9.Models.Topic>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<style>
+    body {
+     
+    }
+
+</style>
+<h1 class="alert alert alert-info">Topic</h1>
+@if (User.IsInRole("Manager"))
+{
+<p>
+    <a class="btn btn-danger" asp-action="Create">Create New</a>
+</p>
+}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Deadline_1)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Deadline_1)
+                </td>
+                <td>
+                    @if (User.IsInRole("Coordinator"))
+                    {
+                        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id">Set Deline</a>
+                    }
+                    @if (User.IsInRole("Manager"))
+                    {
+                        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id">Edit Tiltle</a>
+                    }
+                    @if (User.IsInRole("Student IT"))
+                    {<a class="btn btn-info" asp-area="Staff" asp-controller="Contribution" asp-action="Index" asp-route-topicId="@item.Id">Sumit </a>
+                    }
+                    @if (User.IsInRole("Manager") || User.IsInRole("Coordinator"))
+                    {
+                        <a class="btn btn-info" asp-area="Staff" asp-controller="Contribution" asp-action="Index" asp-route-topicId="@item.Id">Mark </a>
+                    }
+                    @if (User.IsInRole("Manager"))
+                    {
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

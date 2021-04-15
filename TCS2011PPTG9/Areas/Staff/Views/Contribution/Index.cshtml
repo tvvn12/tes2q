@@ -1,0 +1,55 @@
+﻿@model IEnumerable<TCS2011PPTG9.Models.Contribution>
+
+@{
+    ViewData["Title"] = "Index";
+}
+@if (User.IsInRole("Manager") || User.IsInRole("Coordinator"))
+{
+    <a class="btn btn-primary" asp-action="DownloadApprovedFile" asp-route-topicId="@ViewBag.TopicId"> Download Approved Files</a>
+}
+<h1>Submitsion Place</h1>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contributor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Topic)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Contributor.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Topic.Id)
+                </td>
+                <td>
+                    @if (User.IsInRole("Coordinator") )
+                    {
+
+                        <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Marks </a>
+                    }
+                   
+                    @if (User.IsInRole("Manager"))
+                    {
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
